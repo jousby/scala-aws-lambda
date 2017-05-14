@@ -21,14 +21,13 @@ provider:
 #  stage: dev
 #  region: us-east-1
 
-
 package:
   artifact: target/scala-2.12/demo.jar
 
 functions:
-  hello:
-    handler: hello.Handler
+  simpleOk:
+    handler: demo.SimpleOkResponse
     events:
       - http:
-          path: hello
+          path: simple/ok
           method: get

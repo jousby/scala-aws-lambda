@@ -29,7 +29,7 @@ case class HttpResponse(statusCode: HttpStatusCode = HttpStatusCode.CODE_200_OK,
     b.append("{")
 
     // output status code
-    b.append(s""""statusCode":${statusCode.toJsonString}""")
+    b.append(s""""statusCode":${statusCode}""")
 
     // output body if defined
     body.foreach(s => b.append(s""","body":"$s""""))
@@ -48,3 +48,10 @@ case class HttpResponse(statusCode: HttpStatusCode = HttpStatusCode.CODE_200_OK,
     b.toString()
   }
 }
+
+object HttpResponse {
+  def apply(bodyValue: String): HttpResponse = HttpResponse(body = Some(bodyValue))
+}
+
+
+

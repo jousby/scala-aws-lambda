@@ -16,11 +16,6 @@ abstract class HttpRequestStreamHandler extends RequestStreamHandler {
         httpResponse.toJsonString
       }
       case Failure(ex) => {
-        // TODO I would like to detect if the function is deployed in a dev stage and
-        // help the developer out by returning the full stacktrace. Otherwise in the
-        // interests of security best practices we don't return a stacktrace to the
-        // user.
-
         // log error to cloudwatch
         val logger = context.getLogger
         logger.log(ex.getStackTrace.toString)
