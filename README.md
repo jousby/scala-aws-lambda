@@ -4,7 +4,7 @@
 
 Lightweight set of libraries that puts a more user friendly functional api on top of the default aws java interfaces.
 
-###Design Goals:
+### Design Goals:
 
 * Minimal set of dependencies (just the aws provided ```aws-lambda-java-core```) to keep lamdba function artifacts small.
 * Don't force the use of a particular json serialisation library. 
