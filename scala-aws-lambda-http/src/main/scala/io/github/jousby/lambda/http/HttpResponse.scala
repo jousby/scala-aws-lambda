@@ -36,8 +36,8 @@ case class HttpResponse(statusCode: HttpStatusCode = HttpStatusCode.CODE_200_OK,
 
     // output headers if defined
     if (!headers.isEmpty) {
-      b.append(s""""","headers":""")
-      headers.map(_.toJsonString).mkString("{", ",", "}")
+      b.append(s""","headers":""")
+      b.append(headers.map(_.toJsonString).mkString("{", ",", "}"))
     }
 
     // output base64 encoding flag if turned on

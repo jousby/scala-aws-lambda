@@ -12,7 +12,10 @@ class HttpResponseSpec extends FlatSpec {
     val parseAttempt: Either[ParsingFailure, Json] = parse(response.toJsonString)
 
     val prettyJson: String = parseAttempt match {
-      case Left(failure) => throw failure
+      case Left(failure) => {
+        println(response.toJsonString)
+        throw failure
+      }
       case Right(json) => json.spaces2
     }
 
@@ -57,6 +60,41 @@ class HttpResponseSpec extends FlatSpec {
     val expected =
       """{
         |  "statusCode" : 500
+        |}""".stripMargin
+
+    compareJson(response, expected)
+  }
+
+  it should "handle custom headers" in {
+    val customHeaders = Seq(
+      HttpHeader(HttpHeaderKeys.AccessControlAllowOrigin, "*"),
+      HttpHeader(HttpHeaderKeys.Age, "12"))
+    val response = HttpResponse(headers = customHeaders)
+    val expected =
+      """{
+        |  "statusCode" : 200,
+        |  "headers" : {
+        |    "Access-Control-Allow-Origin" : "*",
+        |    "Age" : "12"
+        |  }
+        |}""".stripMargin
+
+    compareJson(response, expected)
+  }
+
+  it should "handle a custom body and custom headers" in {
+    val customHeaders = Seq(
+      HttpHeader(HttpHeaderKeys.AccessControlAllowOrigin, "*"),
+      HttpHeader(HttpHeaderKeys.Age, "12"))
+    val response = HttpResponse(body = Some("hello"), headers = customHeaders)
+    val expected =
+      """{
+        |  "statusCode" : 200,
+        |  "body" : "hello",
+        |  "headers" : {
+        |    "Access-Control-Allow-Origin" : "*",
+        |    "Age" : "12"
+        |  }
         |}""".stripMargin
 
     compareJson(response, expected)

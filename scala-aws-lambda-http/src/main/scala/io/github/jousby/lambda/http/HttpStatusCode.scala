@@ -4,7 +4,7 @@ package io.github.jousby.lambda.http
 /**
   * Not an exhaustive list of predefined codes but my view on the ones you are most likely to need in a lambda function.
   *
-  * See https://en.wikipedia.org/wiki/List_of_HTTP_status_codes for a more comprehensive list.
+  * See [[https://en.wikipedia.org/wiki/List_of_HTTP_status_codes status codes]] for a more comprehensive list.
   */
 object HttpStatusCode {
   val CODE_200_OK = 200

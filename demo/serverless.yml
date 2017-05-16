@@ -31,3 +31,15 @@ functions:
       - http:
           path: simple/ok
           method: get
+  simpleHello:
+    handler: demo.SimpleHelloResponse
+    events:
+      - http:
+          path: simple/hello
+          method: get
+  simpleHelloWithHeaders:
+    handler: demo.SimpleHelloResponseWithHeaders
+    events:
+      - http:
+          path: simple/hello/headers
+          method: get
