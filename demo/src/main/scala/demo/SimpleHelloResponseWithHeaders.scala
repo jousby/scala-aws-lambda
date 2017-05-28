@@ -2,6 +2,7 @@ package demo
 
 import com.amazonaws.services.lambda.runtime.Context
 import io.github.jousby.lambda.http._
+import io.github.jousby.lambda.http.model._
 
 import scala.util.Try
 

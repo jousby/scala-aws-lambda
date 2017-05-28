@@ -1,4 +1,4 @@
-package io.github.jousby.lambda.http
+package io.github.jousby.lambda.http.model
 
 
 case class HttpHeader(key: HttpHeaderKey, value: HttpHeaderValue) {
@@ -14,6 +14,7 @@ object HttpHeaderKeys {
   val AccessControlAllowOrigin: HttpHeaderKey = "Access-Control-Allow-Origin"
   val AcceptPatch: HttpHeaderKey = "Accept-Patch"
   val Age: HttpHeaderKey = "Age"
+  val ContentType: HttpHeaderKey = "Content-Type"
 
 
 //  Allow	Valid methods for a specified resource. To be used for a 405 Method not allowed	Allow: GET, HEAD	Permanent
@@ -27,7 +28,6 @@ object HttpHeaderKeys {
 //  Content-Location	An alternate location for the returned data	Content-Location: /index.htm	Permanent
 //    Content-MD5	A Base64-encoded binary MD5 sum of the content of the response	Content-MD5: Q2hlY2sgSW50ZWdyaXR5IQ==	Obsolete[8]
 //  Content-Range	Where in a full body message this partial message belongs	Content-Range: bytes 21010-47021/47022	Permanent
-//    Content-Type	The MIME type of this content	Content-Type: text/html; charset=utf-8	Permanent
 //    Date	The date and time that the message was sent (in "HTTP-date" format as defined by RFC 7231) [34]	Date: Tue, 15 Nov 1994 08:12:31 GMT	Permanent
 //  ETag	An identifier for a specific version of a resource, often a message digest	ETag: "737060cd8c284d8af7ad3082f209582d"	Permanent
 //  Expires	Gives the date/time after which the response is considered stale (in "HTTP-date" format as defined by RFC 7231)	Expires: Thu, 01 Dec 1994 16:00:00 GMT	Permanent: standard

@@ -43,3 +43,15 @@ functions:
       - http:
           path: simple/hello/headers
           method: get
+  image:
+    handler: demo.ImageResponse
+    events:
+      - http:
+          path: image
+          method: get
+  echo:
+    handler: demo.RequestEcho
+    events:
+      - http:
+          path: echo
+          method: get

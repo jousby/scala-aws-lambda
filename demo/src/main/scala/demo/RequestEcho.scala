@@ -6,9 +6,8 @@ import io.github.jousby.lambda.http.model.{HttpRequest, HttpResponse}
 
 import scala.util.Try
 
-
-class SimpleHelloResponse extends HttpRequestStreamHandler {
+class RequestEcho extends HttpRequestStreamHandler {
   def handleHttpRequest(request: HttpRequest, context: Context): Try[HttpResponse] = Try {
-    HttpResponse("hello")
+    HttpResponse(request.toString)
   }
 }

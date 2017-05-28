@@ -2,9 +2,9 @@ package io.github.jousby.lambda.http
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers._
-
 import io.circe._
 import io.circe.parser._
+import io.github.jousby.lambda.http.model.{HttpHeader, HttpHeaderKeys, HttpResponse, HttpStatus}
 
 class HttpResponseSpec extends FlatSpec {
 
@@ -56,7 +56,7 @@ class HttpResponseSpec extends FlatSpec {
   }
 
   it should "handle a status code other than the default" in {
-    val response = HttpResponse(HttpStatusCode.CODE_500_INTERNAL_SERVER_ERROR)
+    val response = HttpResponse(HttpStatus.CODE_500_INTERNAL_SERVER_ERROR)
     val expected =
       """{
         |  "statusCode" : 500
@@ -93,6 +93,30 @@ class HttpResponseSpec extends FlatSpec {
         |  "body" : "hello",
         |  "headers" : {
         |    "Access-Control-Allow-Origin" : "*",
+        |    "Age" : "12"
+        |  }
+        |}""".stripMargin
+
+    compareJson(response, expected)
+  }
+
+  it should "handle a response specifying all attributes" in {
+    val customHeaders = Seq(
+      HttpHeader(HttpHeaderKeys.ContentType, "image/png"),
+      HttpHeader(HttpHeaderKeys.Age, "12"))
+    val response = HttpResponse(
+      isBase64Encoded = true,
+      statusCode = 200,
+      body = Some("ASPDUNASDOUNA"),
+      headers = customHeaders)
+
+    val expected =
+      """{
+        |  "isBase64Encoded" : true,
+        |  "statusCode" : 200,
+        |  "body" : "ASPDUNASDOUNA",
+        |  "headers" : {
+        |    "Content-Type" : "image/png",
         |    "Age" : "12"
         |  }
         |}""".stripMargin

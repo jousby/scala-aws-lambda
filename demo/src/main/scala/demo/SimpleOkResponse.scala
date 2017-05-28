@@ -1,7 +1,8 @@
 package demo
 
 import com.amazonaws.services.lambda.runtime.Context
-import io.github.jousby.lambda.http.{HttpRequest, HttpRequestStreamHandler, HttpResponse}
+import io.github.jousby.lambda.http.HttpRequestStreamHandler
+import io.github.jousby.lambda.http.model.{HttpRequest, HttpResponse}
 
 import scala.util.Try
 

@@ -1,7 +1,7 @@
-package io.github.jousby.lambda.http
+package io.github.jousby.lambda.http.model
 
 /**
-  * Model the required output for api gateway driven lambda functions.
+  * Model the required json output for api gateway driven lambda functions.
   *
   * Output format specification is documented at:
   * https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-set-up-simple-proxy.html#api-gateway-simple-proxy-for-lambda-output-format
@@ -18,7 +18,7 @@ package io.github.jousby.lambda.http
   * @param headers
   * @param isBase64Encoded
   */
-case class HttpResponse(statusCode: HttpStatusCode = HttpStatusCode.CODE_200_OK,
+case class HttpResponse(statusCode: HttpStatusCode = HttpStatus.CODE_200_OK,
                         body: Option[String] = None,
                         headers: Seq[HttpHeader] = Seq.empty,
                         isBase64Encoded: Boolean = false) {
@@ -27,6 +27,9 @@ case class HttpResponse(statusCode: HttpStatusCode = HttpStatusCode.CODE_200_OK,
     val b = new StringBuilder
 
     b.append("{")
+
+    // output base64 encoding flag if turned on
+    if (isBase64Encoded) b.append(s""""isBase64Encoded":$isBase64Encoded,""")
 
     // output status code
     b.append(s""""statusCode":${statusCode}""")
@@ -39,9 +42,6 @@ case class HttpResponse(statusCode: HttpStatusCode = HttpStatusCode.CODE_200_OK,
       b.append(s""","headers":""")
       b.append(headers.map(_.toJsonString).mkString("{", ",", "}"))
     }
-
-    // output base64 encoding flag if turned on
-    if (isBase64Encoded) b.append(s""""sBase64Encoded":$isBase64Encoded""")
 
     b.append("}")
 
