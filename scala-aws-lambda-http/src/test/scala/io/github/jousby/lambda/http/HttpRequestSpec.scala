@@ -25,7 +25,7 @@ class HttpRequestSpec extends FlatSpec {
   import HttpRequest._
 
   "A HttpRequest" should "parse from the example json" in {
-    val expected = HttpRequest("", "", "", Map.empty, Map.empty, false)
+//    val expected = HttpRequest("", "", "", Map.empty, Map.empty, false)
     val json =
       """{
         |  "resource": "/{proxy+}",
@@ -91,7 +91,7 @@ class HttpRequestSpec extends FlatSpec {
     println(parseRequestJson(json))
   }
 
-  it should "" in {
+  it should "handle a real path only example" in {
     val json =
       """{
         |    "resource": "/echo",
