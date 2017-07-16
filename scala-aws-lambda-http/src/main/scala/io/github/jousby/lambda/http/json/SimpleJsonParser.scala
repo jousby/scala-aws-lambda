@@ -58,6 +58,6 @@ object SimpleJsonParser {
   }
 
   def getOptionalAttribute[T](parseResult: Map[String, Any], attributeName: String): Option[T] = {
-    parseResult.get(attributeName).flatMap(x => if (x == null) None else Some(x.asInstanceOf[T]))
+    parseResult.get(attributeName).flatMap(x => if (x == null || x == "") None else Some(x.asInstanceOf[T]))
   }
 }

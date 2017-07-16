@@ -2,9 +2,11 @@ package io.github.jousby.lambda.http
 
 import io.circe._
 import io.circe.parser._
-import io.github.jousby.lambda.http.model.{HttpRequest, HttpResponse}
+import io.github.jousby.lambda.http.model.{HttpRequest, HttpResponse, Identity, RequestContext}
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers._
+
+import scala.util.Success
 
 class HttpRequestSpec extends FlatSpec {
 
@@ -25,7 +27,51 @@ class HttpRequestSpec extends FlatSpec {
   import HttpRequest._
 
   "A HttpRequest" should "parse from the example json" in {
-//    val expected = HttpRequest("", "", "", Map.empty, Map.empty, false)
+    val expected = Success(HttpRequest(
+      "/{proxy+}",
+      "/hello/world",
+      "POST",
+      Map(
+        "Accept" -> "*/*",
+        "Accept-Encoding" -> "gzip, deflate",
+        "cache-control" ->  "no-cache",
+        "CloudFront-Forwarded-Proto" -> "https",
+        "CloudFront-Is-Desktop-Viewer" -> "true",
+        "CloudFront-Is-Mobile-Viewer" -> "false",
+        "CloudFront-Is-SmartTV-Viewer" -> "false",
+        "CloudFront-Is-Tablet-Viewer" -> "false",
+        "CloudFront-Viewer-Country" -> "US",
+        "Content-Type" -> "application/json",
+        "headerName" -> "headerValue",
+        "Host" -> "gy415nuibc.execute-api.us-east-1.amazonaws.com",
+        "Postman-Token" -> "9f583ef0-ed83-4a38-aef3-eb9ce3f7a57f",
+        "User-Agent" -> "PostmanRuntime/2.4.5",
+        "Via" -> "1.1 d98420743a69852491bbdea73f7680bd.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id" -> "pn-PWIJc6thYnZm5P0NMgOUglL1DYtl0gdeJky8tqsg8iS_sgsKD1A==",
+        "X-Forwarded-For" -> "54.240.196.186, 54.182.214.83",
+        "X-Forwarded-Port" -> "443",
+        "X-Forwarded-Proto" -> "https"
+      ),
+      RequestContext(
+        "12345678912",
+        "roq9wj",
+        "testStage",
+        "deef4878-7910-11e6-8f14-25afc3e9ae33",
+        Identity(
+          "192.168.196.186",
+          "PostmanRuntime/2.4.5"
+        ),
+        "/{proxy+}",
+        "POST",
+        "gy415nuibc"
+      ),
+      false,
+      Some(Map("name" -> "me")),
+      Some(Map("proxy" -> "hello/world")),
+      Some(Map("stageVariableName" -> "stageVariableValue")),
+      Some("""{\r\n\t\"a\": 1\r\n}""")
+    ))
+
     val json =
       """{
         |  "resource": "/{proxy+}",
@@ -88,10 +134,48 @@ class HttpRequestSpec extends FlatSpec {
         |}
       """.stripMargin
 
-    println(parseRequestJson(json))
+    parseRequestJson(json) should equal (expected)
   }
 
   it should "handle a real path only example" in {
+    val expected = Success(HttpRequest(
+      "/echo",
+      "/echo",
+      "GET",
+      Map(
+        "Accept" -> "*/*",
+        "CloudFront-Forwarded-Proto" -> "https",
+        "CloudFront-Is-Desktop-Viewer" -> "true",
+        "CloudFront-Is-Mobile-Viewer" -> "false",
+        "CloudFront-Is-SmartTV-Viewer" -> "false",
+        "CloudFront-Is-Tablet-Viewer" -> "false",
+        "CloudFront-Viewer-Country" -> "AU",
+        "Host" -> "ie4e348qt6.execute-api.us-east-1.amazonaws.com",
+        "User-Agent" -> "curl/7.47.0",
+        "Via" -> "1.1 d4dbc6987ddd22a023698236d3f09b02.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id" -> "QulVPjmWSVSm8eHiY7XtG-YzfjYCfo5y22W7UllDwaeN96Fc7SJMbA==",
+        "X-Amzn-Trace-Id" -> "Root=1-594632e8-7d14cf714a172e0f392a0ac6",
+        "X-Forwarded-For" -> "115.64.13.44, 54.240.152.126",
+        "X-Forwarded-Port" -> "443",
+        "X-Forwarded-Proto" -> "https"
+      ),
+      RequestContext(
+        "689889572183",
+        "v54m0g",
+        "dev",
+        "1294925f-53fc-11e7-abd6-41d27f9d7fb1",
+        Identity(
+          "115.64.13.44",
+          "curl/7.47.0"
+        ),
+        "/echo",
+        "GET",
+        "ie4e348qt6",
+        Some("/dev/echo")
+      ),
+      false
+    ))
+
     val json =
       """{
         |    "resource": "/echo",
@@ -146,6 +230,6 @@ class HttpRequestSpec extends FlatSpec {
         |}
       """.stripMargin
 
-    println(parseRequestJson(json))
+    parseRequestJson(json) should equal (expected)
   }
 }
